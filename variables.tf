@@ -25,7 +25,7 @@ variable "environment" {
 #------------------------------------------------------------------------------
 variable "aws_region" {
   type    = string
-  default = "us-east-1"
+  default = "ap-southeast-1"
 }
 
 #------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ variable "availability_zones" {
   description = "List of availability zones to be used by subnets"
 }
 
-variable "public_subnets_cidrs_per_availabilty_zone" {
+variable "public_subnets_cidrs_per_availability_zone" {
   type        = list(any)
   description = "List of CIDRs to use on each availability zone for public subnets"
 }
