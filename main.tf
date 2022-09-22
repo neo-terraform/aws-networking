@@ -123,13 +123,13 @@ resource "aws_route_table" "PrivateRouteTable" {
 #------------------------------------------------------------------------------
 # Route Table
 #------------------------------------------------------------------------------
-resource "aws_route_table_association" "route_Publicsubnet" {
+resource "aws_route_table_association" "public_subnets_route_table" {
   subnet_id      = element(aws_subnet.public_subnet.*.id, count.index)
   count          = length(var.public_subnets_cidrs_per_availability_zone)
   route_table_id = aws_route_table.PublicRouteTable.id
 }
 
-resource "aws_route_table_association" "route_Privatesubnet" {
+resource "aws_route_table_association" "private_subnets_route_table" {
   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
   count          = length(var.private_subnets_cidrs_per_availability_zone)
   route_table_id = aws_route_table.PrivateRouteTable.id
