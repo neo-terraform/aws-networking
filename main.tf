@@ -5,8 +5,11 @@
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
   tags = merge(
-    local.common-tags,
-    tomap({"Name" = "${lower(var.project_name)}-${lower(var.environment)}-vpc"}
+    var.common_tags,
+    tomap({
+      "Name" = "${lower(var.project_name)}-${lower(var.environment)}-vpc",
+      "Description" = "AWS VPC"
+      }
     )
   )
 }
@@ -22,7 +25,7 @@ resource "aws_subnet" "private_subnet" {
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
   tags = merge(
-    local.common-tags,
+    var.common_tags,
     tomap({
       "Name" = "${lower(var.project_name)}-${lower(var.environment)}-private-subnet-${count.index + 1}",
       "Description" = "${lower(var.environment)} private subnet - ${count.index + 1}"
@@ -38,7 +41,7 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
   tags = merge(
-    local.common-tags,
+    var.common_tags,
     tomap({
       "Name" = "${lower(var.project_name)}-${lower(var.environment)}-public-subnet-${count.index + 1}",
       "Description" = "${lower(var.environment)} public subnet - ${count.index + 1}"
@@ -53,7 +56,7 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_internet_gateway" "main-igw" {
   vpc_id = aws_vpc.vpc.id
   tags = merge(
-    local.common-tags,
+    var.common_tags,
     tomap({
       "Name" = "${lower(var.project_name)}-${lower(var.environment)}-main-igw",
       "Description" = "Internet Gateway"
@@ -71,7 +74,7 @@ resource "aws_nat_gateway" "main-natgw" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public_subnet[0].id
   tags = merge(
-    local.common-tags,
+    var.common_tags,
     tomap({
       "Name" = "${lower(var.project_name)}-${lower(var.environment)}-natgw",
       "Description" = "NAT Gateway"
@@ -91,7 +94,7 @@ resource "aws_route_table" "PublicRouteTable" {
   }
 
   tags = merge(
-    local.common-tags,
+    var.common_tags,
     tomap({
       "Name" = "${lower(var.project_name)}-${lower(var.environment)}-public-route-table",
       "Description" = "Public Route Table"
@@ -108,10 +111,10 @@ resource "aws_route_table" "PrivateRouteTable" {
   }
 
   tags = merge(
-    local.common-tags,
+    var.common_tags,
     tomap({
-      "Name" = "${lower(var.project_name)}-${lower(var.environment)}-public-route-table",
-      "Description" = "Public Route Table"
+      "Name" = "${lower(var.project_name)}-${lower(var.environment)}-private-route-table",
+      "Description" = "Private Route Table"
     }
     )
   )

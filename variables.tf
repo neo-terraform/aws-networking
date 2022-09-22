@@ -6,13 +6,6 @@ variable "project_name" {
 }
 
 #------------------------------------------------------------------------------
-# Misc
-#------------------------------------------------------------------------------
-variable "name_prefix" {
-  description = "Name prefix for resources on AWS"
-}
-
-#------------------------------------------------------------------------------
 # Environment
 #------------------------------------------------------------------------------
 variable "environment" {
@@ -23,7 +16,7 @@ variable "environment" {
 #------------------------------------------------------------------------------
 # AWS Region
 #------------------------------------------------------------------------------
-variable "aws_region" {
+variable "region" {
   type    = string
   default = "ap-southeast-1"
 }
@@ -60,8 +53,8 @@ variable "single_nat" {
   description = "Enable single NAT Gateway"
 }
 
-variable "additional_tags" {
+variable "common_tags" {
   type        = map(string)
   default     = {}
-  description = "Additional resource tags"
+  description = "Common tags to each resource"
 }
